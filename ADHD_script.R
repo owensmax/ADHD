@@ -3,7 +3,7 @@
 ###SET THESE BEFORE RUNNING#####
 
 ivs=readLines("/home/max/Documents/linear_mixed_model_abcd/finalfullnames_adhd.txt")
-dvs='cbcl_scr_syn_attention_r'
+dvs= 'ksads_14_853_p' #'cbcl_scr_syn_attention_r'
 covs=c("race.4level","sex","high.educ.bl","household.income.bl","age",'cbcl_scr_syn_internal_r','ehi_ss_score')
 spec_covs=c("smri_vol_subcort.aseg_intracranialvolume",'tfmri_mid_all_beta_mean.motion','tfmri_nback_all_beta_mean.motion','tfmri_sst_all_beta_mean.motion')
 re_covs=c("rel_family_id","mri_info_device.serial.number")
@@ -13,7 +13,7 @@ allvars=c(allvars_butivsmots,spec_covs,ivs)
 phil_exclude=FALSE
 pubs=TRUE
 dti=FALSE
-output_name="/home/max/Documents/linear_mixed_model_abcd/LME_output.txt"
+output_name="/home/max/Documents/linear_mixed_model_abcd/LME_output_diagnosis.txt"
 
 #####SCRIPT BEGINS#### NO FURTHER CHANGES NEEDED########
 
@@ -31,8 +31,8 @@ library('lme4')
 library('rjson')
 library('parallel')
 
-data =  readRDS( paste0("/home/max/Documents/linear_mixed_model_abcd/nda2.0.1.Rds"))
-backup_data=data
+#data =  readRDS( paste0("/home/max/Documents/linear_mixed_model_abcd/nda2.0.1.Rds"))
+#backup_data=data
 data=backup_data
 
 data = data[c(allvars)]
@@ -200,31 +200,6 @@ stat_list[[splitnum]][[5]][simnum,varnum]<-r2_delta
 
 ########end added stuff#############
 
-##############residualization###############
-
-library('umx')
-resid_smri<-umx_residualize(var="cbcl_scr_syn_attention_r", covs = c("race.4level","sex","high.educ.bl","age","smri_vol_subcort.aseg_intracranialvolume","mri_info_deviceserialnumber"),data = smri)
-resid_sst<-umx_residualize(var='cbcl_scr_syn_attention_r', covs = c("race.4level","sex","high.educ.bl","age","smri_vol_subcort.aseg_intracranialvolume","mri_info_deviceserialnumber"),data = sst)
-resid_nb<-umx_residualize(var='cbcl_scr_syn_attention_r', covs = c("race.4level","sex","high.educ.bl","age","smri_vol_subcort.aseg_intracranialvolume","mri_info_deviceserialnumber"),data = nb)
-resid_mid<-umx_residualize(var='cbcl_scr_syn_attention_r', covs = c("race.4level","sex","high.educ.bl","age","smri_vol_subcort.aseg_intracranialvolume","mri_info_deviceserialnumber"),data = mid)
-names(resid_smri)[1]<-"id_redcap"
-names(resid_sst)[1]<-"id_redcap"
-names(resid_nb)[1]<-"id_redcap"
-names(resid_mid)[1]<-"id_redcap"
-
-write.csv(resid_smri,"/home/max/Documents/ABCD_ADHD/ADHD_resid_smri.csv",row.names = FALSE)
-write.csv(resid_sst,"/home/max/Documents/ABCD_ADHD/ADHD_resid_sst.csv",row.names = FALSE)
-write.csv(resid_nb,"/home/max/Documents/ABCD_ADHD/ADHD_resid_nb.csv",row.names = FALSE)
-write.csv(resid_mid,"/home/max/Documents/ABCD_ADHD/ADHD_resid_mid.csv",row.names = FALSE)
-
-
-
-
-
-
-
-#######################33
-
 
 for (r in 1:4) 
 {
@@ -237,9 +212,9 @@ for (r in 1:4)
   covs=c(covs,spec_covs[c(r)])
   #counter+1
   
-  for (d in dvs)
+  for (d in ivs[1:2])
   {
-    for (i in ivs[1:2])
+    for (i in dvs)
     {
       data<-user_data
     
