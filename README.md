@@ -11,6 +11,8 @@ These scripts use data from the ABCD RDS file. The RDS file can be downloaded wi
 Scripts should be run in the same directory as the RDS file. Script run order is 1) "ADHD_Analyses_Final.R" 2) "preanalysis_driver_FINAL.m"
 3) "final_accumulator_metadriver_FINAL.m".
 
+There are a few files with participant names that are used in the data cleaning phase of the R-script that I cannot share for participant privacy reasons (e.g., "philips.txt).
+
 Matlab scripts are currently set to run elastic net regression modeling using the standard covariate approach (i.e., all covariates
 but medication status). To run with no covariates or using medication status as a covariate, change the path directories in the "preanalysis driver"
 script.
